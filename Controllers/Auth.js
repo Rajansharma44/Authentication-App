@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
 const user = require("../Models/ user");
-
+//singup
 exports.signup = async (req, res) => {
     try {
+        console.log("hello");
+        
         //fetch data from body
         const { name, email, password, role } = req.body;
-
+      
         //check if email already exist or not 
         const existingUser = await user.findOne({ email });
 
@@ -67,10 +69,20 @@ exports.login = async (req, res) => {
         }
         if (await bcrypt.compare(password, user0.password)) {
             // if password match
-
+         res.status(202).json({
+            success:true,
+            message:"Logged in successfully"
+         });
+        }
+        else
+        {
+            return res.status(403).json({
+                success:false,
+                message:"Wrong Password"
+            });
         }
     }
     catch (err) {
-
+      console.log(err.message);
     }
-}
+};
